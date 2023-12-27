@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Item, ButtonList } from './ContactList.styled';
-import { deleteContact } from 'redux/contactsSlice';
+import { deleteContact } from '../../redux/contactsSlice';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
@@ -24,16 +24,20 @@ export const ContactList = () => {
     <div>
       <h2>Contacts</h2>
       <ul>
-        {filteredContacts.map(item => (
-          <Item key={item.id}>
-            <p>
-              {item.name} : {item.number}
-            </p>
-            <ButtonList onClick={() => dispatch(deleteContact({ id: item.id }))}>
-              Delete
-            </ButtonList>
-          </Item>
-        ))}
+        {filteredContacts.map(contact => {
+          const { id, name, number } = contact;
+
+          return (
+            <Item key={id}>
+              <p>{name}:</p>
+              <p>{number}</p>
+              <ButtonList onClick={() => dispatch(deleteContact({ id }))}>
+  Delete
+</ButtonList>
+
+            </Item>
+          );
+        })}
       </ul>
     </div>
   );

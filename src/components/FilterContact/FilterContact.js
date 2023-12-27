@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Filters } from './FilterContact.styled';
-import { onUpdateContact } from 'redux/filterSlice';
+import { updateFilter } from '../../redux/filterSlice';
 
 export const FilterContact = () => {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ export const FilterContact = () => {
       <input
         type="text"
         value={filter}
-        onChange={evt => dispatch(onUpdateContact(evt.target.value))}
+        onChange={evt => dispatch(updateFilter(evt.target.value))}
       />
     </Filters>
   );

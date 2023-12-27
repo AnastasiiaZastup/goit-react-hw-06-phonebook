@@ -9,9 +9,10 @@ import {
   Label,
 } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from '../../redux/contactsSlice';
 
 const phoneExample = /^\d{3}-\d{2}-\d{2}$/;
+
 const ContactSchema = Yup.object().shape({
   name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
   number: Yup.string()
@@ -19,12 +20,20 @@ const ContactSchema = Yup.object().shape({
     .required('Required'),
 });
 
-export const ContactForm = () => {
 
+
+export const ContactForm = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(state => state.contacts);
+  const AddContacts = value => {
+    const check = contacts.some(contact => contact.name.toLowerCase() === value.name.toLowerCase());
+    if(check) {
+      console.warn(`${value.name} is already in contacts. Contact not added.`);
+    } else {
+      dispatch(addContact(value));
+    }
+  }
 
- 
   return (
     <Wrapper>
       <Formik
@@ -33,12 +42,10 @@ export const ContactForm = () => {
           number: '',
         }}
         validationSchema={ContactSchema}
-      onSubmit={(values, actions) => {
-        if (!findDuplicates(contacts, values)) {
-          dispatch(addContact(values));
-        }
-        actions.resetForm();
-      }}
+        onSubmit={(values, actions) => {
+          AddContacts(values);
+          actions.resetForm();
+        }}
       >
         <Form>
           <Label>
