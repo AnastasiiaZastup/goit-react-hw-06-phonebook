@@ -10,6 +10,7 @@ import {
 } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from '../../redux/contactsSlice';
+import { selectContacts } from '../../redux/select';
 
 const phoneExample = /^\d{3}-\d{2}-\d{2}$/;
 
@@ -20,19 +21,19 @@ const ContactSchema = Yup.object().shape({
     .required('Required'),
 });
 
-
-
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(selectContacts);
   const AddContacts = value => {
-    const check = contacts.some(contact => contact.name.toLowerCase() === value.name.toLowerCase());
-    if(check) {
+    const check = contacts.some(
+      contact => contact.name.toLowerCase() === value.name.toLowerCase()
+    );
+    if (check) {
       console.warn(`${value.name} is already in contacts. Contact not added.`);
     } else {
       dispatch(addContact(value));
     }
-  }
+  };
 
   return (
     <Wrapper>
